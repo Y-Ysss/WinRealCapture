@@ -6,70 +6,107 @@
         xmlns:local="clr-namespace:WinRealCapture"
         mc:Ignorable="d"
         Icon="icon.ico"
-        Title="WinRealCapture" Height="350" Width="525" Closed="Window_Closed">
-  <Grid>
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="*" />
-    </Grid.RowDefinitions>
-
-    <!-- メニュー -->
-    <Menu Grid.Row="0" Padding="0,4,0,4">
-      <MenuItem Header="_File">
-        <MenuItem x:Name="ExitMenu" Header="E_xit" Click="ExitMenu_Click" />
-      </MenuItem>
-      <MenuItem Header="_Help">
-        <MenuItem x:Name="GitHubMenu" Header="Access to GitHub" Click="GitHubMenu_Click"  />
-      </MenuItem>
-    </Menu>
-    
-    <!-- 保存先フォルダ指定部分 (デフォルトでは exe フォルダにでもする？ -->
-    <Border Grid.Row="1" BorderThickness="1" BorderBrush="#ddd" Margin="4,4,4,0" Padding="4">
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="Auto" />
-          <ColumnDefinition Width="*" />
-          <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-
-        <Label Grid.Column="0" Content="Saving Directory:" />
-        <TextBox Grid.Column="1" x:Name="SavingDirectoryTextBox" Text="" VerticalAlignment="Stretch" VerticalContentAlignment="Center" Margin="4,0,4,0" />
-        <Button Grid.Column="2" x:Name="SavingDirectorySelectButton" Content="..." Click="SavingDirectorySelectButton_Click" />
-      </Grid>
-    </Border>
-
-    <!-- メッセージ表示部分 -->
-    <Border Grid.Row="2" BorderThickness="1" BorderBrush="#ddd" Margin="4" Padding="4">
-      <StackPanel Orientation="Vertical">
-        <Label x:Name="MessageLabel" Content="Usage: You can capture active window image by pressing Ctrl + F2 key." />
-        <Label x:Name="ErrorLabel" Content="Error: none" Foreground="#f00" />
-      </StackPanel>
-    </Border>
-
-    <!-- 画像一覧プレビュー部分 -->
-    <Border Grid.Row="3" BorderThickness="1" BorderBrush="#ddd" Margin="4" Padding="4">
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="Auto" />
-          <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
-        <Grid Grid.Column="0" Width="190px">
-          <Grid.RowDefinitions>
+        Title="WinRealCapture" Height="393" Width="525" Closed="Window_Closed">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-          </Grid.RowDefinitions>
-          <Label Grid.Row="0" Content="Saved images" />
-          <ListBox x:Name="SavedFileListBox" Grid.Row="1" FontSize="12px" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,4,0" SelectionChanged="SavedFileListBox_SelectionChanged" MouseDoubleClick="SavedFileListBox_MouseDoubleClick" KeyDown="SavedFileListBox_KeyDown" />
-          
-        </Grid>
-        <Border Grid.Column="1" BorderThickness="1" BorderBrush="#ddd" Background="#888" Padding="0" >
-          <Image x:Name="PreviewImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-        </Border>
-      </Grid>
-    </Border>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
-  </Grid>
+        <!-- メニュー -->
+        <Menu Grid.Row="0" Padding="0,4,0,4">
+            <MenuItem Header="_File">
+                <MenuItem x:Name="ExitMenu" Header="E_xit" Click="ExitMenu_Click" />
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem x:Name="GitHubMenu" Header="Access to GitHub" Click="GitHubMenu_Click"  />
+            </MenuItem>
+        </Menu>
+
+        <!-- 保存先フォルダ指定部分 (デフォルトでは exe フォルダにでもする？ -->
+        <Border Grid.Row="1" BorderThickness="1" BorderBrush="#ddd" Margin="4,4,4,0" Padding="4">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Margin="2">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="3.5*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="Saving Directory" />
+                        <TextBox Grid.Column="1" x:Name="SavingDirectoryTextBox" Text="" VerticalAlignment="Stretch" VerticalContentAlignment="Center" />
+                        <Button Grid.Column="2" x:Name="SavingDirectorySelectButton" Content="..." Margin="4,0,0,0" Padding="4,0,4,0" Click="SavingDirectorySelectButton_Click" />
+                    </Grid>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Margin="2">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="3.5*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="Saved Directories"/>
+                        <ComboBox Grid.Column="1" x:Name="DirectoriesListComboBox" SelectionChanged="DirectoriesListComboBox_SelectionChanged"/>
+                        <Button Grid.Column="2" x:Name="AddDirectoryButton" Content="+" Margin="4,0,0,0" Padding="4,0,4,0" Click="AddDirectoryButton_Click"/>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+
+
+        <!-- 画像一覧プレビュー部分 -->
+        <Border Grid.Row="2"  Margin="4">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0" Width="190px">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Content="Saved images" Padding="2"/>
+                    <ListBox x:Name="SavedFileListBox" Grid.Row="1" FontSize="12px" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,4,0" SelectionChanged="SavedFileListBox_SelectionChanged" MouseDoubleClick="SavedFileListBox_MouseDoubleClick" KeyDown="SavedFileListBox_KeyDown" >
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem x:Name="OpenFileContextMenu" Header="Open File" Click="OpenFileContextMenu_Click"/>
+                                <MenuItem x:Name="OpenDirectoryContextMenu" Header="Open Directory" Click="OpenDirectoryContextMenu_Click"/>
+                                <MenuItem x:Name="DeleteFileContextMenu" Header="Delete File" Click="DeleteFileContextMenu_Click" />
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+                    </ListBox>
+
+                </Grid>
+                <Border Grid.Column="1" BorderThickness="1" BorderBrush="#ddd" Background="#888" Padding="0" >
+                    <Image x:Name="PreviewImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- メッセージ表示部分 -->
+        <Border Grid.Row="3" BorderThickness="1" BorderBrush="#ddd">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Column="0" x:Name="ConsoleLabel" Content="Console : none" Padding="2" Background="#FFEAEAEA" />
+                <Label Grid.Column="1" x:Name="ConsoleOKLabel" Content="OK" Padding="2" Background="#FFEAEAEA" Visibility="Collapsed"/>
+                <!--<Label Grid.Column="1" Content="Cancel" Padding="2" Background="#FFEAEAEA" Visibility="Collapsed"/>-->
+                <Label Grid.Column="2" x:Name="HideConsoleLabel" Content="×" Padding="6,0,6,0" Background="#FFD0D0D0" MouseLeftButtonUp="HideConsoleLabel_MouseLeftButtonUp"/>
+            </Grid>
+        </Border>
+
+    </Grid>
 </Window>
