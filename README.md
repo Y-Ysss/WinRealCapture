@@ -4,13 +4,13 @@ WinRealCapture (ver_Yoseatlly)
 
 
 ## Download
-- Original Software [WinRealCapture_ver0.8.0.0.zip](https://github.com/kobake/WinRealCapture/raw/master/archives/WinRealCapture_ver0.8.0.0.zip)
+Original Software [WinRealCapture_ver0.8.0.0.zip](https://github.com/kobake/WinRealCapture/raw/master/archives/WinRealCapture_ver0.8.0.0.zip)
 
 ## Screenshot
-- Original
-<img src="https://raw.githubusercontent.com/kobake/WinRealCapture/master/screenshots/screenshot.png" width="600" />
-- Customize
-<img src="https://raw.githubusercontent.com/Yoseatlly/Data/master/WinRealCapture/img_001.png" width="600">
+Original  
+<img src="https://raw.githubusercontent.com/kobake/WinRealCapture/master/screenshots/screenshot.png" width="600" />  
+Customize  
+<img src="https://raw.githubusercontent.com/Yoseatlly/Data/master/WinRealCapture/img_001.png" width="600">  
 
 ## Usage
 - アプリを起動した状態で Ctrl + F2 キーを押すと、アクティブなウィンドウのスクリーンショットが保存先ディレクトリ (SavingDirectory) に自動保存する。
@@ -29,8 +29,9 @@ WinRealCapture (ver_Yoseatlly)
 [MIT License](https://raw.githubusercontent.com/Yoseatlly/WinRealCapture/master/LICENSE)
 
 ## Author
+### Original
 - GitHub : kobake [GitHub Page](https://github.com/kobake)
-- Original source code : [https://github.com/kobake/WinRealCapture](https://github.com/kobake/WinRealCapture)
+- Source code : [https://github.com/kobake/WinRealCapture](https://github.com/kobake/WinRealCapture)
 
 ### Customize
 - Yoseatlly
