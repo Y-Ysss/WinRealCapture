@@ -5,8 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WinRealCapture"
         mc:Ignorable="d"
-        Icon="icon.ico"
-        Title="WinRealCapture" Height="393" Width="525" Closed="Window_Closed">
+        Icon="/WinRealCapture;component/Resources/Icon.ico"
+        Title="WinRealCapture" Height="393" Width="525" Closed="Window_Closed" Background="White">
+
+    <Window.Resources>
+        <ResourceDictionary Source="Styles.xaml"/>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -18,10 +23,28 @@
         <!-- メニュー -->
         <Menu Grid.Row="0" Padding="0,4,0,4">
             <MenuItem Header="_File">
-                <MenuItem x:Name="ExitMenu" Header="E_xit" Click="ExitMenu_Click" />
+                <MenuItem x:Name="SettingsMenu" Header="Settings" Click="SettingsMenu_Click">
+                    <MenuItem.Icon>
+                        <Image Source="Resources\Settings_24.png" Opacity="0.75"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="ExitMenu" Header="E_xit" Click="ExitMenu_Click">
+                    <MenuItem.Icon>
+                        <Image Source="Resources\Close_24.png" Opacity="0.75"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="_Help">
-                <MenuItem x:Name="GitHubMenu" Header="Access to GitHub" Click="GitHubMenu_Click"  />
+                <MenuItem x:Name="GitHubMenu" Header="kobake (GitHub)" Click="GitHubMenu_Click">
+                    <MenuItem.Icon>
+                        <Image Source="Resources\GitHubLogo_32.png" Opacity="0.78"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem x:Name="GitHubCustomizedMenu" Header="Yoseatlly (GitHub)" Click="GitHubCustomizedMenu_Click">
+                    <MenuItem.Icon>
+                        <Image Source="Resources\GitHubLogo_32.png" Opacity="0.78"/>
+                    </MenuItem.Icon>
+                </MenuItem>
             </MenuItem>
         </Menu>
 
@@ -32,6 +55,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
+                
 
                 <StackPanel Grid.Row="0" Margin="2">
                     <Grid>
@@ -70,40 +94,51 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Grid Grid.Column="0" Width="190px">
+                <Grid Grid.Column="0" Width="190px" Margin="0, 0, 4, 0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <Label Grid.Row="0" Content="Saved images" Padding="2"/>
-                    <ListBox x:Name="SavedFileListBox" Grid.Row="1" FontSize="12px" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,4,0" SelectionChanged="SavedFileListBox_SelectionChanged" MouseDoubleClick="SavedFileListBox_MouseDoubleClick" KeyDown="SavedFileListBox_KeyDown" >
+                    <Label Grid.Row="0" Content="Saved Images" Padding="2" Width="80" HorizontalAlignment="Left"/>
+                    <Label Grid.Row="0" x:Name="ImagesNum" Content="[ 0 ]" Padding="2" HorizontalAlignment="Right"/>
+                    <ListBox x:Name="SavedFileListBox" Grid.Row="1" FontSize="12px" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" SelectionChanged="SavedFileListBox_SelectionChanged" MouseDoubleClick="SavedFileListBox_MouseDoubleClick" KeyDown="SavedFileListBox_KeyDown">
                         <ListBox.ContextMenu>
                             <ContextMenu>
-                                <MenuItem x:Name="OpenFileContextMenu" Header="Open File" Click="OpenFileContextMenu_Click"/>
-                                <MenuItem x:Name="OpenDirectoryContextMenu" Header="Open Directory" Click="OpenDirectoryContextMenu_Click"/>
-                                <MenuItem x:Name="DeleteFileContextMenu" Header="Delete File" Click="DeleteFileContextMenu_Click" />
+                                <MenuItem x:Name="OpenFileContextMenu" Header="Open File" Click="OpenFileContextMenu_Click">
+                                    <MenuItem.Icon>
+                                        <Image Source="Resources\OpenIn_24.png" Opacity="0.80"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem x:Name="OpenDirectoryContextMenu" Header="Open Directory" Click="OpenDirectoryContextMenu_Click">
+                                    <MenuItem.Icon>
+                                        <Image Source="Resources\OpenFolder_24.png" Opacity="0.68"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem x:Name="DeleteFileContextMenu" Header="Delete File" Click="DeleteFileContextMenu_Click">
+                                    <MenuItem.Icon>
+                                        <Image Source="Resources\Delete_24.png" Opacity="0.73"/>
+                                    </MenuItem.Icon>
+                                </MenuItem>
                             </ContextMenu>
                         </ListBox.ContextMenu>
                     </ListBox>
 
                 </Grid>
-                <Border Grid.Column="1" BorderThickness="1" BorderBrush="#ddd" Background="#888" Padding="0" >
+                <Border Grid.Column="1" BorderThickness="2" BorderBrush="#999" Style="{StaticResource TransparentImageBox}">
                     <Image x:Name="PreviewImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                 </Border>
             </Grid>
         </Border>
 
         <!-- メッセージ表示部分 -->
-        <Border Grid.Row="3" BorderThickness="1" BorderBrush="#ddd">
+        <Border Grid.Row="3">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" x:Name="ConsoleLabel" Content="Console : none" Padding="2" Background="#FFEAEAEA" />
-                <Label Grid.Column="1" x:Name="ConsoleOKLabel" Content="OK" Padding="2" Background="#FFEAEAEA" Visibility="Collapsed"/>
-                <!--<Label Grid.Column="1" Content="Cancel" Padding="2" Background="#FFEAEAEA" Visibility="Collapsed"/>-->
+                <Label Grid.Column="0" x:Name="ConsoleLabel" Content="You can capture active window image by pressing [Ctrl] + [F2] Key" Padding="4, 2, 4, 2" Background="#FFEAEAEA" />
                 <Label Grid.Column="2" x:Name="HideConsoleLabel" Content="×" Padding="6,0,6,0" Background="#FFD0D0D0" MouseLeftButtonUp="HideConsoleLabel_MouseLeftButtonUp"/>
             </Grid>
         </Border>

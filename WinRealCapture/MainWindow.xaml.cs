@@ -28,14 +28,12 @@ namespace WinRealCapture
         {
             InitializeComponent();
 
-            // エラーラベルは非表示にしておく
-            HideConsole();
+            // コンソールラベルは非表示にしておく
+            //HideConsole();
 
             // バージョン表示
-            System.Diagnostics.FileVersionInfo ver =
-                System.Diagnostics.FileVersionInfo.GetVersionInfo(
-                System.Reflection.Assembly.GetExecutingAssembly().Location);
-            this.Title += " Ver" + ver.ProductVersion;
+            //System.Diagnostics.FileVersionInfo ver = System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            //this.Title += " Yoseatlly.ver" + ver.ProductVersion;
 
             // ユーザデータから前回のディレクトリ読み出し
             try
@@ -48,48 +46,18 @@ namespace WinRealCapture
                 // Default directory
                 SavingDirectoryTextBox.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
             }
+            RefreshComboBox();
 
             // キーボードフック開始
             KeyboardHook.StartHook(OnCtrlF2);
-
-            // ListBoxに追加
-            foreach (var dir in Properties.Settings.Default.SavedDirectories)
-            {
-                ComboBoxItem item = new ComboBoxItem();
-                item.Content = dir;
-                DirectoriesListComboBox.Items.Add(item);
-            }
         }
+
+        // Func ========================================
 
         private void Window_Closed(object sender, EventArgs e)
         {
             // キーボードフック終了
             KeyboardHook.EndHook();
-        }
-
-        // コンソール表示
-        private void ShowConsole(int color, string str)
-        {
-            ConsoleLabel.Visibility = Visibility.Visible;
-            HideConsoleLabel.Visibility = Visibility.Visible;
-            ConsoleLabel.Content = str;
-            if(color == 1)
-            {
-                ConsoleLabel.Foreground = Brushes.Red;
-            } else if(color == 2)
-            {
-                ConsoleLabel.Foreground = Brushes.Blue;
-            }
-            else
-            {
-                ConsoleLabel.Foreground = Brushes.Black;
-            }
-        }
-        private void HideConsole()
-        {
-            ConsoleLabel.Visibility = Visibility.Collapsed;
-            HideConsoleLabel.Visibility = Visibility.Collapsed;
-            ConsoleLabel.Content = "";
         }
 
         // Ctrl + F2 が押されたときに呼ばれるところ
@@ -101,7 +69,6 @@ namespace WinRealCapture
             try
             {
                 string savingDirectory = SavingDirectoryTextBox.Text;
-
                 // ディレクトリ有無チェック
                 if (!Directory.Exists(savingDirectory))
                 {
@@ -110,21 +77,141 @@ namespace WinRealCapture
 
                 // キャプチャ実施
                 string fpath = Capture.CaptureActiveWindow(savingDirectory);
-
-                // リストボックスに要素追加
+                
                 SavedFileListBox.Items.Add(new SavedItem { FilePath = fpath });
-
-                // この時点でも SavingDirectory をユーザデータとして保存しておく (保存先を手動で変えられた場合を想定)
+                ImagesNum.Content = "[ " + SavedFileListBox.Items.Count + " ]";
                 Properties.Settings.Default["SavingDirectory"] = savingDirectory;
                 Properties.Settings.Default.Save();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ShowConsole(1, "CaptureError : " + ex.Message);
             }
         }
 
+        // コンソール表示
+        private void ShowConsole(int color, string str)
+        {
+            ConsoleLabel.Visibility = Visibility.Visible;
+            HideConsoleLabel.Visibility = Visibility.Visible;
+            ConsoleLabel.Content = str;
+            if (color == 1)
+            {
+                ConsoleLabel.Foreground = Brushes.Red;
+            }
+            else if (color == 2)
+            {
+                ConsoleLabel.Foreground = Brushes.Blue;
+            }
+            else
+            {
+                ConsoleLabel.Foreground = Brushes.Black;
+            }
+        }
 
+        // コンソール・ダイアログ非表示
+        private void HideConsole()
+        {
+            ConsoleLabel.Visibility = Visibility.Collapsed;
+            HideConsoleLabel.Visibility = Visibility.Collapsed;
+            ConsoleLabel.Content = "";
+        }
+
+        // ファイル削除
+        private void DeleteSelectedFile()
+        {
+            var item = SavedFileListBox.SelectedItem as SavedItem;
+            if (item == null) return;
+            try
+            {
+                HideConsole();
+                SavedFileListBox.Items.Remove(item);
+                PreviewImage.Source = null;
+                File.Delete(item.FilePath);
+                ImagesNum.Content = "[ " + SavedFileListBox.Items.Count + " ]";
+            }
+            catch (Exception)
+            {
+                ShowConsole(1, "FileDeleteError");
+            }
+        }
+        // ファイル開く
+        private void OpenSelectedFile()
+        {
+            var item = SavedFileListBox.SelectedItem as SavedItem;
+            if (item == null) return;
+            try
+            {
+                HideConsole();
+                Process.Start(item.FilePath);
+            }
+            catch (Exception ex)
+            {
+                ShowConsole(1, "FileOpenError : " + ex.Message);
+            }
+        }
+        private void OpenDirectory()
+        {
+            var item = SavedFileListBox.SelectedItem as SavedItem;
+            if (item == null) return;
+            try
+            {
+                System.Diagnostics.Process.Start("EXPLORER.EXE", @"/select," + item.FilePath);
+            }
+            catch
+            {
+                ShowConsole(1, "FileDirectoryOpenError");
+            }
+        }
+
+        // コンボボックス更新
+        private void RefreshComboBox()
+        {
+            DirectoriesListComboBox.Items.Clear();
+            // ListBoxに追加
+            foreach (var dir in Properties.Settings.Default.SavedDirectories)
+            {
+                ComboBoxItem item = new ComboBoxItem();
+                item.Content = dir;
+                DirectoriesListComboBox.Items.Add(item);
+            }
+        }
+
+
+        // Event ========================================
+        // Menu
+        private void ExitMenu_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+        private void SettingsMenu_Click(object sender, RoutedEventArgs e)
+        {
+            var win = new SettingsWindow();
+            win.ShowDialog();
+            RefreshComboBox();
+        }
+        private void GitHubMenu_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start("https://github.com/kobake/WinRealCapture");
+            }
+            catch (Exception ex)
+            {
+                ShowConsole(1, "OpenUrlError : " + ex.Message);
+            }
+        }
+        private void GitHubCustomizedMenu_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start("https://github.com/Yoseatlly/WinRealCapture");
+            }
+            catch (Exception ex)
+            {
+                ShowConsole(1, "OpenUrlError : " + ex.Message);
+            }
+        }
 
         private void SavingDirectorySelectButton_Click(object sender, RoutedEventArgs e)
         {
@@ -134,7 +221,7 @@ namespace WinRealCapture
             dialog.SelectedPath = SavingDirectoryTextBox.Text;
             dialog.ShowNewFolderButton = true;
             var ret = dialog.ShowDialog();
-            if(ret== System.Windows.Forms.DialogResult.OK)
+            if (ret == System.Windows.Forms.DialogResult.OK)
             {
                 SavingDirectoryTextBox.Text = dialog.SelectedPath;
 
@@ -159,6 +246,8 @@ namespace WinRealCapture
                 image.UriSource = new Uri(item.FilePath);
                 image.EndInit();
                 PreviewImage.Source = image;
+
+                //ImagesNum.Content = "[ "+ (SavedFileListBox.SelectedIndex + 1) + "/" + SavedFileListBox.Items.Count + " ]";
             }
             catch (Exception)
             {
@@ -166,14 +255,13 @@ namespace WinRealCapture
             }
         }
 
-        // リストボックス要素のダブルクリックまたはEnter押下でファイルを直接開く
         private void SavedFileListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             OpenSelectedFile();
         }
         private void SavedFileListBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if(e.Key== Key.Enter)
+            if (e.Key == Key.Enter)
             {
                 OpenSelectedFile();
             }
@@ -182,54 +270,6 @@ namespace WinRealCapture
                 DeleteSelectedFile();
             }
         }
-        private void OpenSelectedFile()
-        {
-            var item = SavedFileListBox.SelectedItem as SavedItem;
-            if (item == null) return;
-            try
-            {
-                HideConsole();
-                Process.Start(item.FilePath);
-            }
-            catch (Exception ex)
-            {
-                ShowConsole(1, "FileOpenError : " + ex.Message);
-            }
-        }
-        private void DeleteSelectedFile()
-        {
-            var item = SavedFileListBox.SelectedItem as SavedItem;
-            if (item == null) return;
-            try
-            {
-                HideConsole();
-                SavedFileListBox.Items.Remove(item);
-                PreviewImage.Source = null;
-                File.Delete(item.FilePath);
-            }
-            catch (Exception)
-            {
-            }
-        }
-
-        // 終了メニュー
-        private void ExitMenu_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
-        // Help - Access GitHub メニュー
-        private void GitHubMenu_Click(object sender, RoutedEventArgs e)
-        {
-            try {
-                Process.Start("https://github.com/kobake/WinRealCapture");
-            }
-            catch(Exception ex)
-            {
-                ShowConsole(1, "OpenUrlError : " + ex.Message);
-            }
-        }
-
 
         private void AddDirectoryButton_Click(object sender, RoutedEventArgs e)
         {
@@ -238,7 +278,7 @@ namespace WinRealCapture
                 DirectoriesListComboBox.Items.Add(SavingDirectoryTextBox.Text);
                 Properties.Settings.Default.SavedDirectories.Add(SavingDirectoryTextBox.Text);
                 Properties.Settings.Default.Save();
-                ShowConsole(2, "Add \"" + SavingDirectoryTextBox.Text + "\"");
+                ShowConsole(2, "Saved \"" + SavingDirectoryTextBox.Text + "\"");
             }
         }
 
@@ -252,22 +292,20 @@ namespace WinRealCapture
             HideConsole();
         }
 
-        // ContextMenu
+        // ListBox ContextMenu
         private void OpenFileContextMenu_Click(object sender, RoutedEventArgs e)
         {
             OpenSelectedFile();
         }
-
         private void OpenDirectoryContextMenu_Click(object sender, RoutedEventArgs e)
         {
-            var item = SavedFileListBox.SelectedItem as SavedItem;
-            System.Diagnostics.Process.Start("EXPLORER.EXE", @"/select," + item.FilePath);
+            OpenDirectory();
         }
-
         private void DeleteFileContextMenu_Click(object sender, RoutedEventArgs e)
         {
             DeleteSelectedFile();
         }
+
 
     }
 }

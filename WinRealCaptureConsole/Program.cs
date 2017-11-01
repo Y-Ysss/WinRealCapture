@@ -49,9 +49,6 @@ namespace EasyCapture
             return Win32Wrap.CallNextHookEx(_hookID, nCode, wParam, lParam);
         }
 
-        
-
-
         static void DoCapture()
         {
             IntPtr hwnd = Win32Wrap.GetForegroundWindow();

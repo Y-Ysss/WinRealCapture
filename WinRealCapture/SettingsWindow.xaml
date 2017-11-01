@@ -1,0 +1,38 @@
+﻿<Window x:Class="WinRealCapture.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WinRealCapture"
+        mc:Ignorable="d"
+        Title="Settings" Height="251" Width="400.517">
+    <Window.Resources>
+        <ResourceDictionary Source="Styles.xaml"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="259*"/>
+                <ColumnDefinition Width="59*"/>
+                <ColumnDefinition Width="76*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Content="Saved Directory" Padding="4" HorizontalAlignment="Left" Width="91"/>
+            <Button x:Name="CancelRemoveButton" Grid.Column="0" Content="Undo" Margin="0,3,5,3" Padding="6,0,6,0" FontSize="10" HorizontalAlignment="Right" Click="CancelRemoveButton_Click"/>
+            <Button x:Name="RemoveButton" Grid.Column="1" Content="Remove" Margin="0,3,5,3" Padding="6,0,6,0" FontSize="10" HorizontalAlignment="Right" Width="50" Click="RemoveButton_Click"  />
+            <Button x:Name="RemoveAllButton" Grid.Column="2" Content="Remove All" Margin="0,3,10,3" Padding="6,0,6,0" FontSize="10" HorizontalAlignment="Right" Width="63" Click="RemoveAllButton_Click" />
+
+        </Grid>
+
+        <ListView x:Name="SavedDirectoryListView" Margin="10,0,10,0" Grid.Row="1" Grid.ColumnSpan="2" Foreground="Black" >
+            <!--<ListViewItem Content="ListViewItem" Style="{StaticResource ChangeListViewItem}"/>-->
+
+        </ListView>
+
+        <Button x:Name="SaveButton" Grid.Row="2" Content="Save" Margin="0,5,10,5" Padding="15,1,15,1" HorizontalAlignment="Right" Grid.Column="1" Click="SaveButton_Click"/>
+    </Grid>
+</Window>
