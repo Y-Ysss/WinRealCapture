@@ -4,12 +4,15 @@ WinRealCapture (ver_Yoseatlly)
 
 
 ## Download
-Original Software [WinRealCapture_ver0.8.0.0.zip](https://github.com/kobake/WinRealCapture/raw/master/archives/WinRealCapture_ver0.8.0.0.zip)
+- Original Software [WinRealCapture_ver0.8.0.0.zip](https://github.com/kobake/WinRealCapture/raw/master/archives/WinRealCapture_ver0.8.0.0.zip)
+  
+- Customized Software [WinRealCapture_0.9.1.0.zip](https://github.com/Yoseatlly/Data/raw/master/WinRealCapture/WinRealCapture_0.9.1.0.zip)
 
 ## Screenshot
 Original  
 <img src="https://raw.githubusercontent.com/kobake/WinRealCapture/master/screenshots/screenshot.png" width="600" />  
-Customize  
+  
+Customized  
 <img src="https://raw.githubusercontent.com/Yoseatlly/Data/master/WinRealCapture/img_001.png" width="600">  
 
 ## Usage
@@ -18,8 +21,7 @@ Customize
 - ファイル名は ```capt_YYYYMMDD_hhmmss_nn.png``` の形式で保存する。
 - リストボックス上の項目をダブルクリックするとファイルが直接開く。
 - リストボックス上の項目を選択して DELETE キーを押すとファイルを削除する。
-
-### More
+  
 個人的に追加した機能
 - ディレクトリの保存機能
 - 保存先ディレクトリは、保存済みディレクトリ (Saved Directories) より選択可能。
@@ -30,8 +32,8 @@ Customize
 
 ## Author
 ### Original
-- GitHub : kobake [GitHub Page](https://github.com/kobake)
-- Source code : [https://github.com/kobake/WinRealCapture](https://github.com/kobake/WinRealCapture)
+- GitHub : kobake [https://github.com/kobake](https://github.com/kobake)
+- Repository : [https://github.com/kobake/WinRealCapture](https://github.com/kobake/WinRealCapture)
 
 ### Customize
-- Yoseatlly
+- GitHub : Yoseatlly [https://github.com/Yoseatlly](https://github.com/Yoseatlly)
