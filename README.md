@@ -1,4 +1,4 @@
-WinRealCapture (ver_Yoseatlly)
+WinRealCapture (Y-Ysss customized)
 ====
 アクティブなウィンドウの画像キャプチャを取って PNG形式で自動保存する。
 
@@ -28,7 +28,7 @@ Customized
 - リストボックス上で右クリックで「ファイルを開く」、「フォルダを開く」、「削除」の項目の右クリックメニューが開く。
 
 ## License
-[MIT License](https://raw.githubusercontent.com/Yoseatlly/WinRealCapture/master/LICENSE)
+[MIT License](https://raw.githubusercontent.com/Y-Ysss/WinRealCapture/master/LICENSE)
 
 ## Author
 ### Original
@@ -36,4 +36,4 @@ Customized
 - Repository : [https://github.com/kobake/WinRealCapture](https://github.com/kobake/WinRealCapture)
 
 ### Customize
-- GitHub : Yoseatlly [https://github.com/Yoseatlly](https://github.com/Yoseatlly)
+- GitHub : Y-Ysss [https://github.com/Y-Ysss](https://github.com/Y-Ysss)
